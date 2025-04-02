@@ -1,0 +1,33 @@
+/* Masalan, styles.css faylingizda */
+
+.messages {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Bu sinf har bir xabar elementining stilini o'rnatadi */
+.message-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 14px;
+    text-align: center; /* Matnni o'rtada joylash */
+}
+/* Messages tags uchun sinflar */
+.message-item.info {
+    background-color: #2196F3; /* Blue */
+}
+
+.message-item.success {
+    background-color: #4CAF50; /* Green */
+}
+
+.message-item.warning {
+    background-color: #FFC107; /* Amber */
+}
+
+.message-item.error {
+    background-color: #F44336; /* Red */
+}

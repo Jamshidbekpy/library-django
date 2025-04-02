@@ -1,0 +1,625 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Formula
+{% endblock title %}
+
+{% block style %}
+
+
+{% endblock style %}
+body { margin: 0; padding: 0; }
+canvas { display: block; margin: auto; }
+{% block context %}
+
+
+<div class="py-6 container max-w-screen-xl p-4 mx-auto sm:mb-10 mb-0">
+    <h1 class="mt-5 mb-12 font-bold sm:text-3xl text-2xl">
+      {{ resource.title }}
+    </h1>
+    <div  class="flex sm:flex-row flex-col gap-5 bg-white shadow-2xl rounded-xl overflow-hidden"    >
+      <div class="sm:w-1/4 w-[70%] mx-auto">
+        <img  class="object-cover w-[full] rounded-s-xl"
+        {% if resource.photo %}src="{{ resource.photo.url }}" {% else %}src="{% static 'img/no-image.png' %}" {% endif %}
+          alt=""     />
+      </div>
+      <div class="sm:w-3/4 w-full p-4 relative">
+        <!-- <h1 class="text-gray-900 font-bold text-2xl">Backpack</h1> -->
+        <p style="color: #74808cff; font-weight: 500" class="mt-2 text-gray-600 text-base" >
+          Mualliflar:
+          <span style="color: #0084a8ff; font-weight: 500" >{{ resource.author }}</span>
+        </p>
+        <p
+          style="color: #74808cff; font-weight: 500"
+          class="mt-2 text-gray-600 text-base" >
+          Nashriyot:
+          <span style="color: #0084a8ff; font-weight: 500"
+            >Lorem ipsum dolor sit amet.</span>
+        </p>
+        <p style="color: #74808cff; font-weight: 500" class="mt-2 text-gray-600 text-base"     >
+          Resursni qo'shgan muassasa:
+          <span style="color: #0084a8ff; font-weight: 500"    >Lorem ipsum dolor sit amet.</span     >
+        </p>
+        <div class="flex flex-wrap gap-4 my-5">
+          <div
+            style="background-color: #eef1f3ff"
+            class="rounded-xl border px-3 py-[2px]" >
+            <p style="color: #616161" class="text-sm">
+              Resurs turi:
+              <span style="color: #333; font-weight: 600">{{ resource.resource_type }}</span>
+            </p>
+          </div>
+          <div
+            style="background-color: #eef1f3ff"
+            class="rounded-xl border px-3 py-[2px]"
+          >
+            <p style="color: #616161" class="text-sm">
+              Kategoriyasi:
+              <span style="color: #333; font-weight: 600">{{ resource.category }}</span>
+            </p>
+          </div>
+          <div
+            style="background-color: #eef1f3ff"
+            class="rounded-xl border px-3 py-[2px]"
+          >
+            <p style="color: #616161" class="text-sm">
+              Ko'rishlar soni:
+              <span style="color: #333; font-weight: 600">{{ resource.views }}</span>
+            </p>
+          </div>
+        </div>
+        <p class="mb-5">
+            {{ resource.description }}
+        </p>
+        <div class="flex item-center mb-10">
+          <svg
+            class="w-5 h-5 fill-current text-gray-700"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+            />
+          </svg>
+          <svg
+            class="w-5 h-5 fill-current text-gray-700"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+            />
+          </svg>
+          <svg
+            class="w-5 h-5 fill-current text-gray-700"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+            />
+          </svg>
+          <svg
+            class="w-5 h-5 fill-current text-gray-500"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+            />
+          </svg>
+          <svg
+            class="w-5 h-5 fill-current text-gray-500"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+            />
+          </svg>
+        </div>
+        <div class="sm:absolute relative sm:bottom-5 sm:right-5 sm:flex sm:gap-3 block">
+          <a
+            href="{{tg_link}}" target="_blank" rel="noopener noreferrer"
+            class="w-full sm:w-auto mx-auto text-white bg-gray-900 hover:bg-gray-700 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center gap-1 dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mb-2 sm:mb-0"
+          >
+            <svg
+              class="w-4 h-4 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#fff"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M14.516 6.743c-.41-.368-.443-1-.077-1.41a.99.99 0 0 1 1.405-.078l5.487 4.948.007.006A2.047 2.047 0 0 1 22 11.721a2.06 2.06 0 0 1-.662 1.51l-5.584 5.09a.99.99 0 0 1-1.404-.07 1.003 1.003 0 0 1 .068-1.412l5.578-5.082a.05.05 0 0 0 .015-.036.051.051 0 0 0-.015-.036l-5.48-4.942Zm-6.543 9.199v-.42a4.168 4.168 0 0 0-2.715 2.415c-.154.382-.44.695-.806.88a1.683 1.683 0 0 1-2.167-.571 1.705 1.705 0 0 1-.279-1.092V15.88c0-3.77 2.526-7.039 5.967-7.573V7.57a1.957 1.957 0 0 1 .993-1.838 1.931 1.931 0 0 1 2.153.184l5.08 4.248a.646.646 0 0 1 .012.011l.011.01a2.098 2.098 0 0 1 .703 1.57 2.108 2.108 0 0 1-.726 1.59l-5.08 4.25a1.933 1.933 0 0 1-2.929-.614 1.957 1.957 0 0 1-.217-1.04Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+
+            Telegram
+          </a>
+          <button
+            type="button"
+            data-modal-target="course-modal"
+            data-modal-toggle="course-modal"
+            class="w-full sm:w-auto mx-auto text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mb-2 sm:mb-0">
+            <svg
+              class="w-4 h-4 me-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M17.5 3A3.5 3.5 0 0 0 14 7L8.1 9.8A3.5 3.5 0 0 0 2 12a3.5 3.5 0 0 0 6.1 2.3l6 2.7-.1.5a3.5 3.5 0 1 0 1-2.3l-6-2.7a3.5 3.5 0 0 0 0-1L15 9a3.5 3.5 0 0 0 6-2.4c0-2-1.6-3.5-3.5-3.5Z"
+              />
+            </svg>
+            Ulashish
+          </button>
+
+          <!-- Main modal -->
+          <div
+            id="course-modal"
+            tabindex="-1"
+            aria-hidden="true"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-w-lg max-h-full">
+              <!-- Modal content -->
+              <div
+                class="relative bg-white rounded-lg shadow dark:bg-gray-800"
+              >
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5">
+                  <h3 class="text-lg text-gray-500 dark:text-gray-400">
+                    Kitobni ulashish
+                  </h3>
+                  <button
+                    type="button"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-700 dark:hover:text-white"
+                    data-modal-toggle="course-modal"
+                  >
+                    <svg
+                      class="w-3 h-3"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 14 14"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                      />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                  </button>
+                </div>
+                <!-- Modal body -->
+                <div class="px-4 pb-4 md:px-5 md:pb-5">
+                  <label
+                    for="course-url"
+                    class="text-sm font-medium text-gray-900 dark:text-white mb-2 block"
+                    >Quyidagi kitob havolasini do'stlaringiz bilan baham
+                    ko'ring:</label
+                  >
+                  <div class="relative mb-4">
+                    <input
+                      id="course-url"
+                      type="text"
+                      class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      value="{{ copy_link }}"
+                      disabled
+                      readonly
+                    />
+                    <button
+                      id="btn"
+                      data-copy-to-clipboard-target="course-url"
+                      data-tooltip-target="tooltip-course-url"
+                      class="absolute end-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 inline-flex items-center justify-center"
+                    >
+                      <span id="default-icon-course-url">
+                        <svg
+                          class="w-3.5 h-3.5"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 18 20"
+                        >
+                          <path
+                            d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"
+                          />
+                        </svg>
+                      </span>
+                      <span
+                        id="success-icon-course-url"
+                        class="hidden items-center"
+                      >
+                        <svg
+                          class="w-3.5 h-3.5 text-blue-700 dark:text-blue-500"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 16 12"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M1 5.917 5.724 10.5 15 1.5"
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                    <div
+                      id="tooltip-course-url"
+                      role="tooltip"
+                      class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                    >
+                      <span id="default-tooltip-message-course-url"
+                        >Copy to clipboard</span
+                      >
+                      <span
+                        id="success-tooltip-message-course-url"
+                        class="hidden"
+                        >Copied!</span
+                      >
+                      <div class="tooltip-arrow" data-popper-arrow></div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    data-modal-hide="course-modal"
+                    class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                  >
+                    Yopish
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            id="read_book_btn"
+            class="w-full sm:w-auto mx-auto px-5 py-2.5 text-sm font-medium text-center text-white bg-login rounded-lg hover:bg-hover_login focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-login focus:outline-none dark:focus:ring-blue-800 inline-flex items-center justify-center gap-1 mb-2 sm:mb-0" >
+            <svg
+              class="w-4 h-4 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#fff"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Kitobni o'qish
+          </button>
+
+          <button
+            id="close_book_btn"
+            class="w-full sm:w-auto mx-auto px-5 py-2.5 text-sm font-medium text-center text-white bg-login rounded-lg hover:bg-hover_login focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-login focus:outline-none dark:focus:ring-blue-800 hidden items-center justify-center gap-1 mb-2 sm:mb-0" >
+            <svg
+              class="w-4 h-4 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#fff"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Kitob yopish
+          </button>
+
+          {% if user.is_authenticated %}
+          <button
+              id="download_book_btn"
+              class="w-full sm:w-auto mx-auto text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mb-2 sm:mb-0">
+              <svg class="w-4 h-4 text-gray-800 dark:text-white m-1"  viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 15C3 17.8284 3 19.2426 3.87868 20.1213C4.75736 21 6.17157 21 9 21H15C17.8284 21 19.2426 21 20.1213 20.1213C21 19.2426 21 17.8284 21 15" stroke="#1C274C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> 
+                  <path d="M12 3V16M12 16L16 11.625M12 16L8 11.625" stroke="#1C274C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> 
+              </svg>
+              Yuklab olish
+          </button>
+          {% else %}
+          <button
+              type="button"
+              data-modal-target="download-resource"
+              data-modal-toggle="download-resource"
+              class="w-full sm:w-auto mx-auto text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mb-2 sm:mb-0">
+              <svg class="w-4 h-4 text-gray-800 dark:text-white m-1"  viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 15C3 17.8284 3 19.2426 3.87868 20.1213C4.75736 21 6.17157 21 9 21H15C17.8284 21 19.2426 21 20.1213 20.1213C21 19.2426 21 17.8284 21 15" stroke="#1C274C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> 
+                  <path d="M12 3V16M12 16L16 11.625M12 16L8 11.625" stroke="#1C274C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> 
+              </svg>
+              Yuklab olish
+          </button>
+          {% endif %}
+          
+          <!-- Main error modal -->
+          <div
+              id="download-resource"
+              tabindex="-1"
+              aria-hidden="true"
+              class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+              <div class="relative p-4 w-full max-w-lg max-h-full">
+                  <!-- Modal content -->
+                  <div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
+                      <!-- Modal header -->
+                      <div class="flex items-center justify-between p-4 md:p-5">
+                          <h3 class="text-lg text-gray-500 dark:text-gray-400">
+                              Xatolik
+                          </h3>
+                          <button
+                              type="button"
+                              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-700 dark:hover:text-white"
+                              data-modal-toggle="download-resource"
+                          >
+                              <svg
+                                  class="w-3 h-3"
+                                  aria-hidden="true"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 14 14"
+                              >
+                                  <path
+                                      stroke="currentColor"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                  />
+                              </svg>
+                              <span class="sr-only">Close modal</span>
+                          </button>
+                      </div>
+                      <!-- Modal body -->
+                      <div class="px-4 pb-4 md:px-5 md:pb-5">
+                          <label
+                              for="course-url"
+                              class="text-sm font-medium text-gray-900 dark:text-white mb-2 block" >
+                              <p id="modal-message">
+                                  Yuklab olish uchun tizimga kirishingiz kerak!!!
+                                  <a style="color: #0000FF; font-weight: 500" href="{% url 'accounts:login' %}">Tizimga kirish</a></p>
+                          </label>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="show_book" class="py-6 hidden sm:mb-10 mb-0 container max-w-screen-xl p-4 mx-auto transition-all shadow-2xl" style="width: auto; height: 100%; justify-content: center; align-items: center;">
+ 
+    <div class="read_books" id="read_book"  style=" height: 70vh;">
+      
+       
+    </div>
+  </div>
+
+
+  <div    class="relative pt-2 lg:pt-2 min-h-screen max-w-screen-xl mx-auto p-4 sm:mb-10 mb-16"  >
+    <h1 class="common_title">Ommabop qo'llanmalar</h1>
+
+    <div class="bg-cover w-full flex justify-between items-center">
+      <div
+        class="w-full bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg"
+      >
+        <div
+          class="w-12/12 mx-auto rounded-2xl bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg"
+        >
+          <div            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-center mx-auto">
+            {% for res in mostResources %}
+            <article              class="bg-white p-5 shadow transition duration-300 group transform hover:-translate-y-2 hover:shadow-2xl rounded-lg cursor-pointer border"  >
+              <a
+                target="_self"
+                href="{% url 'resources:resource-detail' res.slug %}"
+                class="absolute opacity-0 top-0 right-0 left-0 bottom-0"
+              ></a>
+              <div class="relative mb-4 rounded-lg">
+                <img
+                  class="h-72 rounded-lg w-full object-cover transition-transform duration-300 transform group-hover:scale-105"
+                  {% if res.photo %}src="{{ res.photo.url }}" {% else %}src="{% static 'img/no-image.png' %}" {% endif %}
+                  alt=""
+                />
+
+                <a
+                  class="flex justify-center items-center bg-slate-700 bg-opacity-80 z-10 absolute top-0 left-0 w-full h-full text-white rounded-2xl opacity-0 transition-all duration-300 transform group-hover:scale-105 text-xl group-hover:opacity-100"
+                  href="{% url 'resources:resource-detail' res.slug %}"
+                  target="_self"
+                  rel="noopener noreferrer"
+                >
+                  Read article
+                  <svg
+                    class="ml-2 w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 5l7 7-7 7M5 5l7 7-7 7"
+                    ></path>
+                  </svg>
+                </a>
+
+                <div
+                  class="absolute top-0 right-0 text-white bg-login rounded-md px-3 py-1"
+                >
+                  <p>{{ res.resource_type }}</p>
+                </div>
+              </div>
+              <div class="relative">
+                <div class="flex justify-between items-center mb-auto">
+                  <div class="flex items-center">
+                    <div class="flex flex-1">
+                      <div class="flex gap-2">
+                        <p
+                          style="color: #818b96ff"
+                          class="text-sm font-semibold"
+                        >
+                          {{ res.author }}
+                        </p>
+                        <p
+                          style="color: #818b96ff"
+                          class="text-sm font-medium"
+                        >
+                          {{ res.publish_year }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex justify-end">
+                    <div
+                      class="text-sm flex items-center gap-1 text-gray-500"
+                    >
+                      <img
+                        class="ml-1 w-4 h-4"
+                        src="{% static 'img/eye.png' %}"
+                        alt=""
+                      />
+                      <p>15</p>
+                    </div>
+                  </div>
+                </div>
+                <h3
+                  class="font-medium two_line text-lg text-start pr-[35px] leading-8"
+                >
+                  <a
+                    href="./details.html"
+                    class="block relative group-hover:text-login transition-colors duration-200"
+                  >
+                    {{ res.title }}
+                  </a>
+                </h3>
+                <div
+                  onclick="addOrRemoveFavourite({{ res.id }})"
+                  class="absolute bottom-0 right-0 inline-flex items-center justify-center rounded-lg bg-white p-2 shadow-md"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                     fill="{%  if res.id in favorites %}#ff0000{% else %}#fff{% endif %}"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="#000"
+                    class="h-6 w-6 text-red-700"
+                    id="like-icon-{{ res.id }}"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock context %}
+
+
+{% block addscript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+<script src="{% static 'js/copy.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock addscript %}
+
+
+{% block script %}
+const show_book = document.getElementById("show_book");
+const read_book_btn = document.getElementById("read_book_btn");
+const close_book_btn = document.getElementById("close_book_btn");
+const download_book_btn = document.getElementById("download_book_btn");
+
+if (download_book_btn) {
+    
+
+    download_book_btn.addEventListener("click", async () => {
+        const response = await fetch('{% url "resources:download-file" resource.id %}');
+        
+        if (response.status === 200) {
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '{{ resource.title }}.pdf';
+            a.click();
+            URL.revokeObjectURL(url);
+        } else {
+            const data = await response.json();
+            alert(data.message);
+        }
+    });
+}
+
+
+read_book_btn.addEventListener("click", async () => {
+    
+        // Fetch the watermarked PDF from the API
+        const response = await fetch('{% url "resources:watermarked-file" resource.id %}');
+        if (response.status !== 200) {
+            const data = await response.json();
+            alert(data.message);
+            return;
+        }
+    show_book.style.display = "flex";
+    close_book_btn.style.display = "flex";
+    read_book_btn.style.display = "none";
+    const pdfBlob = await response.blob();
+
+    // Render the PDF as images
+    const pdfData = new Uint8Array(await pdfBlob.arrayBuffer());
+    const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+
+    const readBookDiv = document.getElementById('read_book');
+    readBookDiv.innerHTML = '';  // Clear any previous content
+
+    for (let pageNum = 1; pageNum <= pdf.numPages; ++pageNum) {
+        const page = await pdf.getPage(pageNum);
+        const viewport = page.getViewport({ scale: 1.5 });
+
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+            canvasContext: context,
+            viewport: viewport
+        };
+
+        await page.render(renderContext).promise;
+
+        // Append the canvas to the readBookDiv
+        readBookDiv.appendChild(canvas);
+    }
+});
+
+close_book_btn.addEventListener("click", () => {
+    show_book.style.display = "none";
+    close_book_btn.style.display = "none";
+    read_book_btn.style.display = "flex";
+});
+
+
+{% endblock script %}
+

@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+home page
+{% endblock title %}
+{% block context %}
+
+
+
+<div class="lg:px-6 2xl:px-0">
+
+  <div class="mx-auto container relative z-0 px-4 2xl:px-0">
+    <div class="flex gap-8 flex-col-reverse md:flex-row max-w-screen-xl mx-auto px-2 pt-10 pb-2 sm:pb-32 sm:pt-40">
+      <div class="md:w-3/5 flex flex-col justify-center">
+        {% if user.is_authenticated %}
+        <h1
+          class="text-2xl sm:text-[3.5rem] font-black text-gray-900 text-center md:text-left md:w-10/12 sm:leading-[65px] leading-[35px]">
+          
+          Assalomu aleykum hurmatli {{ user.first_name }} </h1>
+        {% else %}
+          <h3
+          class="text-2xl sm:text-[3.5rem] font-black text-gray-900 text-center md:text-left md:w-10/12 sm:leading-[55px] leading-[35px]">Assalomu aleykum hurmatli foydalanuvchi! </h3>
+        {% endif %}
+        <h2
+          class="md:w-8/12 my-4 text-center md:text-left md:my-8 text-gray-700 dark:text-gray-200 text-base lg:text-xl">
+          Salomatlik maktabi nomli online platformamizga xush kelibsiz! Bu saytda siz o'zingiz uchun foydali bo'lishi mumkin bo'lgan tibbiyotga oid qimmatli ma'lumotlar manbaiga ega bo'lishingiz va tanishib chiqishingiz mumkin  </h2>
+        <div class="w-full flex justify-center md:block">
+          <a href="{% url 'resources:resource-list' %}"><button
+            class="hover:bg-hover_login transition-colors bg-login py-2 px-5 lg:py-4 lg:px-10 rounded-3xl text-white text-sm md:text-lg f-f-p focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700">Batafsil ma'lumot</button></a>
+        </div>
+      </div>
+      <div class="w-full sm:w-2/5 h-64 md:h-auto m-auto flex items-center overflow-hidden">
+        <img class="md:absolute md:w-1/2 md:-ml-28"
+          src="{% static 'img/medical.jpg' %}" style="width: 900px; height: 100%;"
+          alt="Laptop with pivot page on screen" role="img" />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="max-w-screen-xl mx-auto p-4 sm:mt-20 mt-8 relative">
+  <h1 class="common_subtitle sm:mt-5 mt-0">Mashhur kategoriyalar</h1>
+  <div class="sm:my-10 my-5 mb-8 relative flex gap-5">
+    <div class="grid main_category_wrap gap-5 justify-center items-center">
+
+
+
+      {% for each_category in ten_famous_categories %}
+        <a href="{% url 'resources:resource-list' %}?category={{each_category.slug}}" class="main_category relative">
+          <img src="{{ each_category.icon.url }}" alt="Category"
+            style="width:100%;">
+          <div class="content">
+            <h1>{{ each_category.name }}</h1>
+          </div>
+        </a>
+      {% endfor %}
+      
+
+
+      
+    </div>
+
+
+
+  </div>
+  <div class="w-full my-10 flex items-center justify-center">
+    <a href="{% url 'resources:resource-list' %}"
+      class="px-8 py-3 text-sm font-medium text-center border border-gray-200 rounded-lg focus:outline-none text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:z-10 focus:ring-4 focus:ring-gray-100 inline-flex items-center justify-center gap-1">Ko'proq
+      ko'rish
+      <svg class="rtl:rotate-180 w-4 h-4 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="#fff"
+        viewBox="0 0 14 10">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M1 5h12m0 0L9 1m4 4L9 9" />
+      </svg></a>
+  </div>
+</div>
+
+<hr class="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+<div class="sm:mt-12 mb-20 my-8">
+  <h1 class="common_subtitle sm:my-8 mt-0">Resurs turlari</h1>
+
+  <div class="slider">
+    <div class="slide-track">
+      {% for i in range %}
+      
+        {% for each_type in type_resources %}
+        <a href="{% url 'resources:resource-list' %}?resourceType={{each_type.id}}" class="slide">
+          <!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/557257/3.png" height="100" width="250" alt="" /> -->
+          <p>{{ each_type.name }}</p>
+        </a>
+        {% endfor %}
+      {% endfor %}
+      {% for each_category in ten_famous_categories %}
+        <a href="{% url 'resources:resource-list' %}?category={{each_category.slug}}" class="slide">
+          <p>{{ each_category.name }}</p>
+        </a>
+      {% endfor %}
+      
+    </div>
+  </div>
+</div>
+
+<section class="c_grid max-w-screen-xl mx-auto p-4 sm:mb-24 mb-16">
+  <div class="grid_1 grid_big_box">
+    <div>
+      <img src="./img/g2.svg" alt="">
+    </div>
+    <p>Salomatlik maktabi nomli tibbiyotga oid majmualar to'plami platformasi</p>
+    <p>
+      Ushbu platformada tibbiyotga oid qimmatli ilmiy ma'lumotlar, kitoblar, jurnallar majmuasi jamlangan </p>
+      <a href="{% url 'resources:resource-list' %}">
+    <button type="submit"
+      class="text-white bg-login hover:bg-hover_login focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base w-full sm:w-auto px-5 py-2.5 text-center">Batafsil</button></a>
+  </div>
+  {% for each_type in random_four_resource_types %}
+    {% if forloop.counter != 1 %}
+      <div class="grid_{{forloop.counter}} grid_box">
+        <div>
+          <img src="{% static 'img/g2.svg' %}" alt="">
+        </div>
+        <h2>{{ each_type.resurslar.count }} {{each_type.name}}lar</h2>
+        <p>Saytdagi mavjud {{ each_type.name }} to'plamlari </p>
+      </div>
+    {% endif %}
+  
+  {% endfor %}
+</section>
+
+<div class="sm:mt-0 mb-36 my-8">
+  <h1 class="common_subtitle sm:my-8 mt-0">Formulalar turlari</h1>
+
+  <div class="slider">
+    <div class="slide-track">
+      
+      {% for i in range %}
+        {% for each_formula in random_20_formulalar %}
+          
+          <a href="{% url 'formula:detail' each_formula.pk %}" class="slide">
+            <!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/557257/1.png" height="100" width="250" alt="" /> -->
+            <p>{{ each_formula.name }}</p>
+          </a>
+        {% endfor %}
+      {% endfor %}
+    
+  
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+{% endblock context %}
+
+
+{% block static %}
+
+{% endblock static %}

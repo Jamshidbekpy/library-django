@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Formula
+{% endblock title %}
+
+
+
+{% block context %}
+
+
+<div class="max-w-screen-xl mx-auto p-4 min-h-[70dvh]">
+  <h1 class="common_subtitle sm:my-8 my-5">Formulalar ro'yhati</h1>
+  <div class="flex flex-wrap justify-start sm:gap-x-6 gap-x-3 sm:gap-y-5 gap-y-2 mb-20">
+    <a href="{% url 'formula:information' %}" class="bg-neutral-200 hover:bg-neutral-300 cursor-pointer rounded-full uppercase sm:px-14 px-5 sm:pb-3.5 pb-2 sm:pt-4 pt-2.5 sm:text-base text-xs font-medium shadow-md my-2 inline-block leading-normal text-neutral-700 transition duration-150 ease-in-out hover:shadow-lg">Shkalalarni baholash mezoni</a>
+    
+    <a href="{% url 'formula:funksional-holat' %}" class="bg-neutral-200 hover:bg-neutral-300 cursor-pointer rounded-full uppercase sm:px-14 px-5 sm:pb-3.5 pb-2 sm:pt-4 pt-2.5 sm:text-base text-xs font-medium shadow-md my-2 inline-block leading-normal text-neutral-700 transition duration-150 ease-in-out hover:shadow-lg">Funksional holat</a>
+
+  {% for formula in formulas %}
+    <a href="{% url 'formula:detail' formula.id %}" class="bg-neutral-200 hover:bg-neutral-300 cursor-pointer rounded-full uppercase sm:px-14 px-5 sm:pb-3.5 pb-2 sm:pt-4 pt-2.5 sm:text-base text-xs font-medium shadow-md my-2 inline-block leading-normal text-neutral-700 transition duration-150 ease-in-out hover:shadow-lg">{{ formula.name }}</a>
+  {% endfor %}
+ </div>
+</div>
+
+
+
+
+{% endblock context %}

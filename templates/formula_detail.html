@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Formula Detail
+{% endblock title %}
+
+{% block extrahead %}
+<script>
+  MathJax = {
+    loader: {load: ['input/asciimath', 'output/chtml']}
+  } 
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js">
+  </script>
+{% endblock extrahead %}
+
+
+
+{% block context %}
+
+<section class="min-h-[70dvh] mx-auto w-full formula_page">
+  <div class="flex h-[100%] gap-6">
+    <div class="formula_list sm:block hidden sm:w-[30%] container">
+      <h1 class="text-center font-semibold text-xl my-4">Formulalar ro'yxati</h1>
+      <div class="formula_list_wrap sm:gap-x-2 gap-x-1 sm:gap-y-0 gap-y-0 mb-5 px-5">
+  {% for formula in formulas %}
+  <a href="{% url 'formula:detail' formula.id %}"
+          class="bg-neutral-200 hover:bg-neutral-300 cursor-pointer rounded-full uppercase sm:px-5 px-2 sm:py-2 flex justify-center items-center sm:text-xs text-xs font-medium shadow-md my-2 leading-normal text-neutral-700 transition duration-150 ease-in-out hover:shadow-lg">{{ formula.name }}</a>
+  {% endfor %}
+      </div>
+    </div>
+
+
+    <div class="formula_content sm:w-[70%] w-full container">
+      <h1 class="text-center font-semibold text-xl my-3">{{ formula.name }}</h1>
+      <p class="text-center font-semibold text-lg">{{ formula.get_formula }}</p>
+      <p class="text-center font-semibold text-3xl my-6">{{ formula.name }}ni hisoblash</p>
+      <section class="flex justify-between sm:flex-row flex-col-reverse sm:gap-5 gap-0 sm:px-8 px-4">
+        <form id="form" method='POST' class="rounded-lg sm:w-[50%] w-full pt-5 sm:px-6 px-0 mb-10 sm:mb-0">
+          {% csrf_token %}
+          <div class="grid grid-cols-2 md:gap-6 gap-3 mb-8">
+          {% for var in formula.variables %}
+          <div class="relative z-0 w-full  group">
+              <input type="number" id="m" name="{{var}}" id="floating_{{var}}"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-login peer"
+                placeholder=" " required />
+              <label for="floating_{{var}}"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-login peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                {{ var }} </label>
+          </div>
+          {% endfor %}
+   
+          </div>
+         
+
+          <button id="resultBtn" type="submit"
+            class="text-white bg-login hover:bg-hover_login focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Natijani
+            ko'rish</button>
+          <div class="my-5">
+            <p class="text-lg"><span id="result-id" class="font-semibold">{{ result }}</span></p>
+          </div>
+        </form>
+        <img class="h-[600px] rounded-lg object-cover sm:mb-0 mr-5" src="{{ formula.image.url }}" alt="" style="width: 600px; height: 500px;">
+      </section>
+    </div>
+  </div>
+
+</section>
+
+
+
+
+{% endblock context %}
+
+{% block script %}
+const form = document.querySelector('form');
+const resultElement = document.getElementById('result-id'); // Target the result paragraph
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault(); // Prevent default form submission
+
+  const formData = new FormData(form); // Create FormData object
+
+  try {
+    const response = await fetch('{% url "formula:calculate-api" formula.id %}', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+
+    const data = await response.json(); // Parse JSON response data
+
+    resultElement.textContent = `Natija: ${data.result}`; // Update result with calculated value
+  } catch (error) {
+    console.error('Error:', error);
+    resultElement.textContent = 'Error: An unexpected error occurred.';
+  }
+});
+
+// Optional: Handle back button click (if it doesn't navigate away)
+const backButton = document.querySelector('button[onclick^="window.location"]'); // Target button with `window.location` in click handler
+if (backButton) {
+  backButton.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevent navigation (if needed)
+    // Add custom back button functionality here (e.g., redirect using history.back())
+  });
+}
+
+
+{% endblock script %}

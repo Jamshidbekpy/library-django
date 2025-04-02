@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Premium Qilish
+{% endblock title %}
+
+
+
+{% block context %}
+
+
+<div class="my-16 sm:mt-16 sm:mb-28 px-4">
+    <div
+      class="grid sm:grid-cols-2 items-center sm:gap-16 gap-5 sm:p-8 p-5 mx-auto max-w-4xl bg-white shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md text-[#333] font-[sans-serif]"
+    >
+      <div>
+        <h1 class="sm:text-3xl text-2xl font-extrabold">Premium qilish</h1>
+        <p class="sm:text-base text-sm text-gray-400 my-5">
+          Siz ushbu ma'lumotlarni yuklab olishingiz uchun rasmda keltirilgan plastikka 50000 so'm pul o'tkazishingiz va pul o'tkazilgach chekni quyidagi link orqali adminga yuborishingiz lozim.
+        </p>
+        <div class="w-[60%] mt-5">
+          <a
+            href="https://t.me/perfect_IQ"
+            class="text-white bg-[#24292F] hover:bg-[#24292F]/90 w-full focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center gap-1 me-2 mb-2"
+          >
+           Chekni yuborish
+
+            <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="transparent" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2M12 4v12m0-12 4 4m-4-4L8 8"/>
+            </svg>
+            
+          </a>
+        </div>
+      </div>
+
+      <div class="sm:w-[350px] w-full">
+        <img
+        class="rounded-md"
+          src="{% static 'img/premium-boss.jpg' %}"
+          alt=""
+        />
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock context %}
