@@ -12,11 +12,12 @@ class UserRegisterForm(forms.ModelForm):
     last_name = forms.CharField(widget=TextInput(attrs={'placeholder':'familiyangizni kiriting:'}), required=True)
     phone = forms.CharField(widget=TextInput(attrs={'placeholder':'telefon nomeringizni kiriting:'}), required=False)
     password = forms.CharField(widget=PasswordInput(attrs={'placeholder':'password:'}), required=True)
+    job = forms.CharField(widget=TextInput(attrs={'placeholder':'Kasbingizni kiriting:'}), required=True)
     confirm_password = forms.CharField(widget=TextInput(attrs={'placeholder':'confirm password...'}), required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'phone')
+        fields = ('username', 'email', 'first_name', 'last_name', 'phone','job')
 
     def clean_email(self):
         email = self.cleaned_data.get('email')

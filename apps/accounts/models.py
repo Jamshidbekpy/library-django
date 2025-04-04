@@ -17,6 +17,8 @@ class User(AbstractUser, BaseModel):
     photo = models.ImageField(upload_to='images/', null=True, blank=True)
     birth = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=10, choices=USER_STATUS_CHOICES, default='free')
+    job = models.CharField(max_length=150)
+    
 
     
     EMAIL_FIELD = "email"

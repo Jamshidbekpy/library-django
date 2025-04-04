@@ -1,28 +1,81 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
-from django.views.generic import ListView, TemplateView
-from apps.home.forms import ContactForm, SubscribeForm
+from django.views.generic import ListView
+from apps.home.forms import ContactForm
 from django.contrib import messages
-from apps.resources.models import Resource, ResourceType, Category
-from apps.formula.models import Formula
+from apps.resources.models import Resource, ResourceType
 from apps.home.models import Favourite, Subscribe   
 # Create your views here.
 from django.db.models import Q 
 from django.core.paginator import Paginator
 
 
-class HomePageView(View):
-    def get(self, request):
-        context = {
-            'range': range(4),
-            'ten_famous_categories':Category.objects.all().order_by('?')[:10],
-            'category_resources':Resource.objects.all().filter(),
-            'type_resources':ResourceType.objects.all(),
-            'random_four_resource_types':ResourceType.objects.all().order_by('?')[:5],
-            'random_20_formulalar':Formula.objects.all().order_by('?')[:20]
+class ResourceListView(ListView):
+    model = Resource
+    template_name = 'resources.html'
+    context_object_name = 'resources'
+    paginate_by = 16
+    PAGINATION_URL = ''
+
+    def get_queryset(self):
+        queryset = Resource.objects.filter(is_active=True).order_by('-id')  # Base queryset
+
+        # Get search query from request.GET (modify as needed)
+        search_query = self.request.GET.get('search', '')
+        if search_query:
+            self.PAGINATION_URL = f'&search={search_query}'  
+            queryset = queryset.filter(Q(title__icontains=search_query) | 
+                                       Q(description__icontains=search_query) | 
+                                       Q(author__icontains=search_query) | 
+                                       Q(keywords__icontains=search_query))
+
+        # Add additional filters based on request.GET parameters (modify as needed)
+        filter_by_category = self.request.GET.get('category', '')
+        if filter_by_category:
+            self.PAGINATION_URL += f'&category={filter_by_category}'  
+            queryset = queryset.filter(category__slug=filter_by_category)
+            
+            
+        filter_by_type = self.request.GET.get('resourceType', '')
+        if filter_by_type:
+            self.PAGINATION_URL += f'&resourceType={filter_by_type}'
+            queryset = queryset.filter(resource_type=filter_by_type)
+            
+            
+        filter_by_auditoriya = self.request.GET.get('auditoria', '')
+        if filter_by_auditoriya:
+            self.PAGINATION_URL += f'&auditoria={filter_by_auditoriya}'
+            queryset = queryset.filter(auditoria=filter_by_auditoriya)
         
-        }
-        return render(request, 'home.html', context)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resourceTypes'] = ResourceType.objects.all()
+        context['search_query'] = self.request.GET.get('search', '')  # Pass search query to template
+        context['filter_by_category'] = self.request.GET.get('category', '')  # Pass filter value to template
+        context['filter_by_type'] = self.request.GET.get('resourceType', '')  
+        context['filter_by_auditoriya'] = self.request.GET.get('auditoria', '') 
+        context['pagination_url'] = self.PAGINATION_URL
+        
+        # Get paginated queryset
+        resources = self.object_list
+        paginator = Paginator(resources, self.paginate_by)
+        page_number = self.request.GET.get('page', 1)  # Get current page from GET
+        page_obj = paginator.get_page(page_number)
+        
+        if self.request.user.is_authenticated:
+            # favorites = {f"{resource.id}": resource.is_favourited(resource, self.request.user) for resource in resources}
+            favorites = list(self.request.user.favourites.all().values_list('resource_id', flat=True))
+        else:
+            favorites = []
+        context['favorites'] = favorites
+
+        # Update context with pagination information
+        context['page_obj'] = page_obj
+        context['is_paginated'] = paginator.num_pages > 1
+
+        return context
     
     
 class ContactPage(View):
@@ -179,16 +232,17 @@ class DefonicAssistant:
 
     def get_response(self, user_input: str, model: str = "llama-3.3-70b-versatile") -> str:
         chat_completion = self.client.chat.completions.create(
-            messages=[
-                {"role": "system", "content": (
-                        "You are Defonic, an AI assistant for 'Salomatlik Maktabi' developed by the ICT JOBS team."
-                        "You must only respond in Uzbek (Latin script) and stay strictly within the medical field."
-                        "If a question is unrelated to healthcare, politely inform the user that you can only assist with medical topics."
-                    )},
-                {"role": "user", "content": user_input},
-            ],
-            model=model,
-        )
+    messages=[
+        {"role": "system", "content": (
+            "Siz Kitobiy — 'Kutubxona Yordamchisi' sun’iy intellektsiyasiz. Siz ICT JOBS jamoasi tomonidan ishlab chiqilgansiz."
+            "Siz faqatgina kitoblar, mualliflar, janrlar va kutubxona bilan bog‘liq savollarga javob bera olasiz."
+            "Siz doim O'zbek tilida (lotin yozuvida) javob berishingiz kerak."
+            "Agar foydalanuvchi kitoblar yoki kutubxona bilan bog‘liq bo‘lmagan savol bersa, muloyimlik bilan faqat kutubxona mavzularida yordam bera olishingizni tushuntiring."
+        )},
+        {"role": "user", "content": user_input},
+    ],
+    model=model,
+)
         return chat_completion.choices[0].message.content
 
 
@@ -212,53 +266,9 @@ class ChatBotView(View):
 
         return JsonResponse({"response": bot_reply})
     
-from django.views import View
-from django.http import JsonResponse
-import json
-
-class BloodAIView(View):
-    template_name = "bloodAI.html"
-    
-    def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        try:
-            data = json.loads(request.body)  # JSON formatdagi ma'lumotni o‘qish
-            systolic = int(data.get("systolic", 0))
-            diastolic = int(data.get("diastolic", 0))
-
-            if systolic == 0 or diastolic == 0:
-                return JsonResponse({"response": "Iltimos, ikkala qiymatni ham kiriting!"})
-
-            if systolic < 90 or diastolic < 60:
-                response = "❗ Qon bosimingiz juda past! (Gipotoniya) Shifokorga murojaat qiling."
-
-            elif 90 <= systolic <= 119 and 60 <= diastolic <= 79:
-                response = "✅ Qon bosimingiz normal. Salomat bo‘ling!"
-
-            elif 120 <= systolic <= 129 and diastolic < 80:
-                response = "⚠️ Sistolik bosimingiz biroz yuqoriroq, lekin diastolik bosimingiz normal. Profilaktika choralarini ko‘ring."
-
-            elif 130 <= systolic <= 139 or 80 <= diastolic <= 89:
-                response = "⚠️ 1-darajali gipertoniya (Yuqori qon bosimi). Sog‘lom turmush tarzini yuriting va shifokor bilan maslahat qiling."
-
-            elif 140 <= systolic <= 179 or 90 <= diastolic <= 119:
-                response = "❗ 2-darajali gipertoniya. Darhol shifokorga murojaat qiling!"
-
-            elif systolic >= 180 or diastolic >= 120:
-                response = "🚨 Katta xavf! (Gipertoniya krizisi) Tez yordam chaqiring!"
-
-            else:
-                response = "⚠️ Noto‘g‘ri ma‘lumot kiritildi. Iltimos, raqamlarni tekshirib qayta kiriting!"
 
 
 
-            return JsonResponse({"response": response})
-
-        except ValueError:
-            return JsonResponse({"response": "Iltimos, faqat raqam kiriting!"})
-    
 
 
 
